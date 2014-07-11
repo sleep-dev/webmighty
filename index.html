@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/createjs.js"></script>
+<script src="js/easeljs.js"></script>
+<script src="js/soundjs.js"></script>
+<script src="js/preloadjs.js"></script>
+<script src="js/tweenjs.js"></script>
+<script src="cardgame.js"></script>
+<!--
+<script>
+var stage;
+var frametxt;
+var lasttime;
+
+var queue;
+var update = true;
+
+var canvas = document.getElementById('mainCanvas');
+
+var load_img = [];
+
+
+for(i = 1; i < 14; i++){
+    load_img.push({'id' : i+'d', 'src' : 'assets/cards/'+i+'d.png'})
+    load_img.push({'id' : i+'h', 'src' : 'assets/cards/'+i+'h.png'})
+    load_img.push({'id' : i+'s', 'src' : 'assets/cards/'+i+'s.png'})
+    load_img.push({'id' : i+'c', 'src' : 'assets/cards/'+i+'c.png'})
+}
+
+function init(){
+    queue = new createjs.LoadQueue();
+    queue.addEventListener("complete", loadComplete);
+    queue.loadManifest(load_img);
+
+    canvas = document.getElementById('mainCanvas');
+    canvas.width = window.innerWidth-33;
+    canvas.height = window.innerHeight-20;
+}
+
+function loadComplete(){
+    console.log('load_end');
+
+    stage = new createjs.Stage("mainCanvas");
+    stage.enableMouseOver(20);
+    frametxt = new createjs.Text("framerate");
+    lasttime = new Date;
+
+    createjs.Ticker.addEventListener("tick", stage);
+    createjs.Touch.enable(stage);
+}
+
+function playCard(id, player){
+    var test = new createjs.Container();
+    card = cardGenerate(id);
+    test.addChild(card);
+    test.x = canvas.width/2;
+    test.y = canvas.height - 200;
+
+    createjs.Tween.get(test, {loop:false}).to({y:100}, 3000, createjs.Ease.elasticInOut);
+    createjs.Tween.get(card).to({x:500}, 3000);
+    stage.addChild(test);
+}
+
+
+function cardGenerate(id){
+    card = new createjs.Bitmap(queue.getResult(id));
+    card.cursor = 'pointer';
+    card.scaleX = card.scaleY = card.scale = 0.3;
+    card.on('rollover', function (evt){
+            console.log('a');
+            this.y += 100;
+            update = true;
+            });
+    card.on('rollout', function (evt){
+            this.y -= 100;
+            update = true;
+            });
+    return card
+}
+
+
+function resize_window(){
+    canvas.width = window.innerWidth - 18;
+    canvas.height = window.innerHeight - 20;
+}
+
+</script>
+--!>
+</head>
+
+<body onload="init()" onresize="resize_window()">
+<div id="canvasHolder" style='background-color:grey;margin:0; padding:0;width:1024px'>
+    <canvas id="mainCanvas" style='margin:0; padding:0;'>
+        Your browser doesn't support html5
+    </canvas>
+</div>
+</body>
+
+</html>
+
